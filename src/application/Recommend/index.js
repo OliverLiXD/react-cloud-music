@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { forceCheck } from "react-lazyload";
 
-import Slider from "../../components/slider";
+import Slider from "../../baseUI/Slider";
 import RecommendList from "../../components/RecommendList";
 import { Content } from "./style";
 import Scroll from "../../baseUI/Scroll";
