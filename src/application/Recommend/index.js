@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { forceCheck } from "react-lazyload";
+import { Route } from "react-router";
 
 import Slider from "../../baseUI/Slider";
 import RecommendList from "../../components/RecommendList";
@@ -8,6 +9,7 @@ import { Content } from "./style";
 import Scroll from "../../baseUI/Scroll";
 import { getBannerList, getRecommendList } from "./store/actionCreators";
 import Loading from "../../baseUI/Loading";
+import Album from "../Album";
 
 function Recommend(props) {
   const { bannerList, recommendList, enterLoading } = props;
@@ -37,6 +39,7 @@ function Recommend(props) {
         </div>
       </Scroll>
       {enterLoading ? <Loading></Loading> : null}
+      <Route path={"/recommend/:id"} component={Album}></Route>
     </Content>
   )
 }

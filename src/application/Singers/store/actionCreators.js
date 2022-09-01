@@ -40,9 +40,9 @@ export const changePageCount = (data) => {
 
 export const getSingerList = (category, alpha) => {
   return (dispatch) => {
-    getSingerListRequest(category, alpha, 0).then((res) => {
-      const data = res.artists;
-      dispatch(changeSingerList(data));
+    getSingerListRequest(category, alpha, 0).then((data) => {
+      const list = data.artists;
+      dispatch(changeSingerList(list));
       dispatch(changeEnterLoading(false));
       dispatch(changePullDownLoading(false));
     }).catch(() => {console.log("getSingerList err")});
@@ -54,9 +54,9 @@ export const refreshMoreSingerList = (category, alpha) => {
     const pageCount = getState().getIn(['singers', 'pageCount']);
     const singerList = getState().getIn(['singers', 'singerList']).toJS();
 
-    getSingerListRequest(category, alpha, pageCount).then((res) => {
-      const data = [...singerList, ...res.artists];
-      dispatch(changeSingerList(data));
+    getSingerListRequest(category, alpha, pageCount).then((data) => {
+      const list = [...singerList, ...data.artists];
+      dispatch(changeSingerList(list));
       dispatch(changeEnterLoading(false));
       dispatch(changePullDownLoading(false));
     }).catch(() => {console.log("refreshMoreSingerList err")});
@@ -65,9 +65,9 @@ export const refreshMoreSingerList = (category, alpha) => {
 
 export const getHotSingerList = () => {
   return (dispatch) => {
-    getHotSingerListRequest(0).then((res) => {
-      const data = res.artists;
-      dispatch(changeSingerList(data));
+    getHotSingerListRequest(0).then((data) => {
+      const list = data.artists;
+      dispatch(changeSingerList(list));
       dispatch(changeEnterLoading(false));
       dispatch(changePullDownLoading(false));
     }).catch(() => {console.log("getHotSingerList err")})
@@ -79,9 +79,9 @@ export const refreshMoreHotSingerList = () => {
     const pageCount = getState().getIn(['singers', 'pageCount']);
     const singerList = getState().getIn(['singers', 'singerList']).toJS();
 
-    getHotSingerListRequest(pageCount).then((res) => {
-      const data = [...singerList, ...res.artists];
-      dispatch(changeSingerList(data));
+    getHotSingerListRequest(pageCount).then((data) => {
+      const list = [...singerList, ...data.artists];
+      dispatch(changeSingerList(list));
       dispatch(changeEnterLoading(false));
       dispatch(changePullDownLoading(false));
     }).catch(() => {console.log("refreshMoreHotSingerList err")})

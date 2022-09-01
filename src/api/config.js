@@ -13,4 +13,6 @@ axiosInstance.interceptors.response.use (
   }
 );
 
+export const HEADER_HEIGHT = 45;
+
 export { axiosInstance };
