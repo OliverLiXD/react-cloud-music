@@ -3,8 +3,9 @@ import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 
 import Recommend from "../Recommend";
 import Rank from "../Rank";
-import Singers from "../Singers"
-import { Top, Tab, TabItem } from "./style"
+import Singers from "../Singers";
+import { Top, Tab, TabItem } from "./style";
+import Player from "../Player";
 
 function Home() {
   return (
@@ -25,6 +26,7 @@ function Home() {
         <Route path={"/singers"} component={Singers}></Route>
         <Redirect to={"/recommend"}></Redirect>
       </Switch>
+      <Player></Player>
     </div>
   )
 }

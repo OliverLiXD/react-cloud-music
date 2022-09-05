@@ -13,6 +13,12 @@ axiosInstance.interceptors.response.use (
   }
 );
 
-export const HEADER_HEIGHT = 45;
+export const HEADER_HEIGHT = document.documentElement.clientWidth / 10;
 
 export { axiosInstance };
+
+export const playMode = {
+  sequence: 0,
+  loop: 1,
+  random: 2
+}

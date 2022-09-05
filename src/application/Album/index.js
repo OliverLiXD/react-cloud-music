@@ -16,8 +16,8 @@ function Album(props) {
   const { getCurrentAlbumDispatch } = props;
   const id = props.match.params.id;
 
-  const [showStatus, setShowStatus] = useState (true);
-  const [title, setTitle] = useState ("歌单");
+  const [showStatus, setShowStatus] = useState(true);
+  const [title, setTitle] = useState("歌单");
 
   useEffect(() => {
     getCurrentAlbumDispatch(id);
@@ -104,7 +104,12 @@ function Album(props) {
                       更多
                     </div>
                   </Menu>
-                  <AlbumList currentAlbum={currentAlbum}></AlbumList>
+                  <AlbumList
+                    collectCount={currentAlbum.subscribedCount}
+                    showCollect={true}
+                    songs={currentAlbum.tracks}
+                    showBackground={true}
+                  ></AlbumList>
                 </div>
               </Scroll>
             )

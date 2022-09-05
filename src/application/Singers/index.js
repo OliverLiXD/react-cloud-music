@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { forceCheck } from "react-lazyload";
+import { Route } from "react-router";
 
 import HorizontalItem from "../../baseUI/HorizontalItem";
 import { NavContainer, ListContainer } from "./style"
@@ -17,7 +18,7 @@ import {
   refreshMoreHotSingerList 
 } from './store/actionCreators';
 import Loading from "../../baseUI/Loading";
-
+import Singer from "../Singer";
 
 function Singers(props) {
   const categoryTypes = [{
@@ -236,6 +237,7 @@ function Singers(props) {
         </Scroll>
         <Loading show={enterLoading}></Loading>
       </ListContainer>
+      <Route path={"/singers/:id"} component={Singer}></Route>
     </div>
   )
 }
