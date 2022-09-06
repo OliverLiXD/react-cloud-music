@@ -68,6 +68,7 @@ export const Top = styled.div`
   .title {
     width: 70%;
     margin: 0 auto;
+    padding-top: 1rem;
     line-height: 8rem;
     text-align: center;
     font-size: 4rem;
@@ -100,6 +101,7 @@ export const CDWrapper = styled.div`
   width: 80%;
   box-sizing: border-box;
   height: 80vw;
+  z-index: 999;
   .cd {
     width: 100%;
     height: 100%;
@@ -195,5 +197,37 @@ export const Operators = styled.div`
   }
   .icon-favorite {
     color: ${style["theme-color"]};
+  }
+`;
+
+export const LyricContainer = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20rem;
+  bottom: 0;
+  height: 90rem;
+  overflow: hidden;
+`;
+export const LyricWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 90rem;
+  margin: 0 auto;
+  box-sizing: border-box;
+  text-align: center;
+  p {
+    line-height: 10rem;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: normal;
+    font-size: 4rem;
+    &.current {
+      color: #fff;
+    }
+    &.pure {
+      position: relative;
+      top: 30vh;
+    }
   }
 `;

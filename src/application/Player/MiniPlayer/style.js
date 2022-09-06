@@ -29,6 +29,10 @@ export const MiniPlayerContainer = styled.div`
     transform: translate3d(0, 0, 0);
     transition: all 0.4s;
   }
+  &.mini-exit {
+    transform: translate3d(0, 0, 0);
+    transition: all .4s
+  }
   &.mini-exit-active {
     transform: translate3d(0, 100%, 0);
     transition: all .4s

@@ -1,16 +1,20 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { SongList, SongItem } from "./style";
 import { getName, getCount } from "../../api/utils";
+import * as actionCreators from "../../application/Player/store/actionCreators";
 
 const AlbumList = React.forwardRef((props, refs) => {
-  // debugger;
-  const { collectCount, showCollect, songs } = props;
+  const { collectCount, showCollect, songs, songsCount } = props;
+  const { changePlayListDispatch, changeCurrentIndexDispatch, changeSequencePlayListDispatch } = props
 
   const totalCount = songs.length;
 
   const selectItem = (e, index) => {
-    console.log (index);
+    changePlayListDispatch(songs);
+    changeSequencePlayListDispatch(songs);
+    changeCurrentIndexDispatch(index);
   }
 
   return (
@@ -34,7 +38,7 @@ const AlbumList = React.forwardRef((props, refs) => {
           {
             songs.map ((item, index) => {
               return (
-                <li key={index}>
+                <li key={index} onClick={(e) => selectItem(e, index)}>
                   <span className="index">{index + 1}</span>
                   <div className="info">
                     <span>{item.name}</span>
@@ -52,4 +56,22 @@ const AlbumList = React.forwardRef((props, refs) => {
   )
 })
 
-export default React.memo(AlbumList);
+const mapStateToProps = (state) => ({
+  songsCount: state.getIn (['player', 'playList']).size
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changePlayListDispatch(data) {
+      dispatch(actionCreators.changePlayList(data));
+    },
+    changeCurrentIndexDispatch(data) {
+      dispatch(actionCreators.changeCurrentIndex(data));
+    },
+    changeSequencePlayListDispatch(data) {
+      dispatch(actionCreators.changeSequencePlayList(data));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(AlbumList));

@@ -12,7 +12,7 @@ import Loading from "../../baseUI/Loading";
 import Album from "../Album";
 
 function Recommend(props) {
-  const { bannerList, recommendList, enterLoading } = props;
+  const { bannerList, recommendList, enterLoading, songsCount } = props;
   const { getBannerDataDispatch, getRecommendListDispatch } = props;
 
   const scrollRef = useRef(null);
@@ -31,7 +31,7 @@ function Recommend(props) {
   const recommendListJS = recommendList ? recommendList.toJS() : [];
   
   return (
-    <Content>
+    <Content songsCount={songsCount}>
       <Scroll className="list" ref={scrollRef} onScroll={forceCheck}>
         <div className="Recommend">
           <Slider bannerList={bannerListJS}></Slider>
@@ -48,7 +48,8 @@ const mapStateToProps = (state) => {
   return {
     bannerList: state.getIn(["recommend", "bannerList"]),
     recommendList: state.getIn(["recommend", "recommendList"]),
-    enterLoading: state.getIn(["recommend", "enterLoading"])
+    enterLoading: state.getIn(["recommend", "enterLoading"]),
+    songsCount: state.getIn(['player', 'playList']).size,
   }
 }
 

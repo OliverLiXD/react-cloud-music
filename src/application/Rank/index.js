@@ -10,7 +10,7 @@ import RankList from "../../components/RankList";
 import Album from "../Album";
 
 function Rank(props) {
-  const { rankList, loading } = props;
+  const { rankList, loading, songsCount } = props;
   const { getRankListDispatch } = props;
 
   const list = rankList ? rankList.toJS() : [];
@@ -32,7 +32,7 @@ function Rank(props) {
   let displayStyle = loading ? {"display":"none"}:  {"display": ""};
   // debugger;
   return (
-    <Container>
+    <Container songsCount={songsCount}>
       <Scroll>
         <div>
           <h1 className="offical" style={displayStyle}> 官方榜 </h1>
@@ -49,7 +49,8 @@ function Rank(props) {
 const mapStateToProps = (state) => {
   return {
     rankList: state.getIn(["rank", "rankList"]),
-    loading: state.getIn(["rank", "loading"])
+    loading: state.getIn(["rank", "loading"]),
+    songsCount: state.getIn(['player', 'playList']).size,
   }
 }
 

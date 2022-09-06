@@ -5,7 +5,7 @@ import style from "../../assets/global-style";
 export const SongList = styled.div`
   border-radius: 2rem;
   opacity: 0.98;
-  background: ${style["highlight-background-color"]};
+  background-color: white;
   /* ${props => props.showBackground ? `background: ${style["highlight-background-color"]}`: ""} */
   .first_line {
     box-sizing: border-box;

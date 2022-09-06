@@ -193,7 +193,7 @@ function Singers(props) {
   let [category, setCategory] = useState('');
   let [alpha, setAlpha] = useState('');
 
-  const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount } = props;
+  const { singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount, songsCount } = props;
   const { getHotSingerListDispatch, updateDispatch, pullDownRefreshDispatch, pullUpRefreshDispatch } = props;
 
   const handleUpdateCatetory = (val) => {
@@ -225,7 +225,7 @@ function Singers(props) {
         <HorizontalItem list={categoryTypes} title={"分类 (默认热门):"} handleClick={handleUpdateCatetory} oldValue={category}></HorizontalItem>
         <HorizontalItem list={alphaTypes} title={"首字母:"} handleClick={handleUpdateAlpha} oldValue={alpha}></HorizontalItem>
       </NavContainer>
-      <ListContainer>
+      <ListContainer songsCount={songsCount}>
         <Scroll
           pullUp={ handlePullUp }
           pullDown = { handlePullDown }
@@ -236,7 +236,7 @@ function Singers(props) {
           <SingerList singerList={singerList}></SingerList>
         </Scroll>
         <Loading show={enterLoading}></Loading>
-      </ListContainer>
+      </ListContainer >
       <Route path={"/singers/:id"} component={Singer}></Route>
     </div>
   )
@@ -248,7 +248,8 @@ const mapStateToProps = (state) => {
     enterLoading: state.getIn(["singers", "enterLoading"]),
     pullUpLoading: state.getIn(["singers", "pullUpLoading"]),
     pullDownLoading: state.getIn(["singers", "pullDownLoading"]),
-    pageCount: state.getIn(["singers", "pageCount"])
+    pageCount: state.getIn(["singers", "pageCount"]),
+    songsCount: state.getIn(['player', 'playList']).size,
   }
 }
 

@@ -12,7 +12,7 @@ import Loading from "../../baseUI/Loading";
 import { isEmptyObject } from "../../api/utils";
 
 function Album(props) {
-  const { currentAlbum: currentAlbumImmutable , enterLoading } = props;
+  const { currentAlbum: currentAlbumImmutable , enterLoading, songsCount } = props;
   const { getCurrentAlbumDispatch } = props;
   const id = props.match.params.id;
 
@@ -54,7 +54,7 @@ function Album(props) {
       unmountOnExit
       onExited={props.history.goBack}
     >
-      <Container>
+      <Container songsCount={songsCount}>
         <Header ref={headerEl} title={title} handleClick={handleBack}></Header>
         {
           !isEmptyObject(currentAlbum) ? 
@@ -124,7 +124,8 @@ function Album(props) {
 const mapStateToProps = (state) => {
   return {
     currentAlbum: state.getIn(["album", "currentAlbum"]),
-    enterLoading: state.getIn(["album", "enterLoading"])
+    enterLoading: state.getIn(["album", "enterLoading"]),
+    songsCount: state.getIn(['player', 'playList']).size
   }
 }
 
