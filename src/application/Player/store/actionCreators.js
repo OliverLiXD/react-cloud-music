@@ -1,6 +1,9 @@
 import { fromJS } from "immutable";
 import * as actionTypes from "./constants";
 
+import { getSongDetailRequest } from '../../../api/request';
+import { INSERT_SONG } from './constants';
+
 
 export const changeFullScreen = (data) => {
   return {
@@ -55,5 +58,19 @@ export const changeCurrentSong = (data) => {
   return {
     type: actionTypes.CHANGE_CURRENT_SONG,
     data: fromJS(data)
+  }
+}
+
+export const insertSong = (data) => ({
+  type: INSERT_SONG,
+  data
+});
+
+export const getSongDetail = (id) => {
+  return (dispatch) => {
+    getSongDetailRequest (id).then (data => {
+      let song = data.songs [0];
+      dispatch (insertSong ( song));
+    })
   }
 }

@@ -44,9 +44,9 @@ const NormalPlayer = (props) => {
     if (!lyricScrollRef.current) return;
     let bScroll = lyricScrollRef.current.getBScroll();
     if(!bScroll) return ;
-    if (currentLineNum > 5) {
+    if (currentLineNum > 4) {
       // 保持当前歌词在第 5 条的位置
-      let lineEl = lyricLineRefs.current[currentLineNum - 5].current;
+      let lineEl = lyricLineRefs.current[currentLineNum - 4].current;
       bScroll.scrollToElement(lineEl, 1000);
     } else {
       // 当前歌词行数 <=5, 直接滚动到最顶端
@@ -64,6 +64,7 @@ const NormalPlayer = (props) => {
       }}
       onExited={() => {
         normalPlayerRef.current.style.display = "none";
+        setCurrentState("");
       }}
       >
         <NormalPlayerContainer ref={normalPlayerRef} style={{visibility: fullScreen ? "visible" : "hidden"}}>

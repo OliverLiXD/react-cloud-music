@@ -2,161 +2,61 @@ import { fromJS } from "immutable";
 
 import * as actionTypes from "./constants";
 import { playMode } from "../../../api/config";
+import { findIndex } from "../../../api/utils";
 
 const defaultState = fromJS({
   fullScreen: false,
   playing: false,
-  sequencePlayList: [{
-    ftype: 0,
-    djId: 0,
-    a: null,
-    cd: '01',
-    crbt: null,
-    no: 1,
-    st: 0,
-    rt: '',
-    cf: '',
-    alia: [
-      '手游《梦幻花园》苏州园林版推广曲'
-    ],
-    rtUrls: [],
-    fee: 0,
-    s_id: 0,
-    copyright: 0,
-    h: {
-      br: 320000,
-      fid: 0,
-      size: 9400365,
-      vd: -45814
-    },
-    mv: 0,
-    al: {
-      id: 84991301,
-      name: '拾梦纪',
-      picUrl: 'http://p1.music.126.net/M19SOoRMkcHmJvmGflXjXQ==/109951164627180052.jpg',
-      tns: [],
-      pic_str: '109951164627180052',
-      pic: 109951164627180050
-    },
-    name: '拾梦纪',
-    l: {
-      br: 128000,
-      fid: 0,
-      size: 3760173,
-      vd: -41672
-    },
-    rtype: 0,
-    m: {
-      br: 192000,
-      fid: 0,
-      size: 5640237,
-      vd: -43277
-    },
-    cp: 1416668,
-    mark: 0,
-    rtUrl: null,
-    mst: 9,
-    dt: 234947,
-    ar: [
-      {
-        id: 12084589,
-        name: '妖扬',
-        tns: [],
-        alias: []
-      },
-      {
-        id: 12578371,
-        name: '金天',
-        tns: [],
-        alias: []
-      }
-    ],
-    pop: 5,
-    pst: 0,
-    t: 0,
-    v: 3,
-    id: 1416767593,
-    publishTime: 0,
-    rurl: null
-  }],
-  playList: [{
-    ftype: 0,
-    djId: 0,
-    a: null,
-    cd: '01',
-    crbt: null,
-    no: 1,
-    st: 0,
-    rt: '',
-    cf: '',
-    alia: [
-      '手游《梦幻花园》苏州园林版推广曲'
-    ],
-    rtUrls: [],
-    fee: 0,
-    s_id: 0,
-    copyright: 0,
-    h: {
-      br: 320000,
-      fid: 0,
-      size: 9400365,
-      vd: -45814
-    },
-    mv: 0,
-    al: {
-      id: 84991301,
-      name: '拾梦纪',
-      picUrl: 'http://p1.music.126.net/M19SOoRMkcHmJvmGflXjXQ==/109951164627180052.jpg',
-      tns: [],
-      pic_str: '109951164627180052',
-      pic: 109951164627180050
-    },
-    name: '拾梦纪',
-    l: {
-      br: 128000,
-      fid: 0,
-      size: 3760173,
-      vd: -41672
-    },
-    rtype: 0,
-    m: {
-      br: 192000,
-      fid: 0,
-      size: 5640237,
-      vd: -43277
-    },
-    cp: 1416668,
-    mark: 0,
-    rtUrl: null,
-    mst: 9,
-    dt: 234947,
-    ar: [
-      {
-        id: 12084589,
-        name: '妖扬',
-        tns: [],
-        alias: []
-      },
-      {
-        id: 12578371,
-        name: '金天',
-        tns: [],
-        alias: []
-      }
-    ],
-    pop: 5,
-    pst: 0,
-    t: 0,
-    v: 3,
-    id: 1416767593,
-    publishTime: 0,
-    rurl: null
-  }],
+  sequencePlayList: [],
+  playList: [],
   mode: playMode.sequence,
   currentIndex: -1,
   showPlayList: false,
   currentSong: {}
 });
+
+const handleInsertSong = (state, song) => {
+  const playList = state.get('playList').toJS().slice(0);
+  const sequenceList = state.get('sequencePlayList').toJS().slice(0);
+  let currentIndex = state.get('currentIndex');
+  // 看看有没有同款
+  let fpIndex = findIndex(song, playList);
+  // 如果是当前歌曲直接不处理
+  if (fpIndex === currentIndex && currentIndex !== -1) return state;
+  currentIndex++;
+  // 把歌放进去，放到当前播放曲目的下一个位置
+  playList.splice (currentIndex, 0, song);
+  // 如果列表中已经存在要添加的歌，暂且称它 oldSong
+  if (fpIndex > -1) {
+    // 如果 oldSong 的索引在目前播放歌曲的索引小，那么删除它，同时当前 index 要减一
+    if (currentIndex > fpIndex) {
+      playList.splice (fpIndex, 1);
+      currentIndex--;
+    } else {
+      // 否则直接删掉 oldSong
+      playList.splice (fpIndex+1, 1);
+    }
+  }
+  // 同理，处理 sequenceList
+  let sequenceIndex = findIndex(playList[currentIndex], sequenceList) + 1;
+  let fsIndex = findIndex(song, sequenceList);
+  // 插入歌曲
+  sequenceList.splice (sequenceIndex, 0, song);
+  if (fsIndex > -1) {
+    // 跟上面类似的逻辑。如果在前面就删掉，index--; 如果在后面就直接删除
+    if (sequenceIndex > fsIndex) {
+      sequenceList.splice (fsIndex, 1);
+      sequenceIndex--;
+    } else {
+      sequenceList.splice (fsIndex + 1, 1);
+    }
+  }
+  return state.merge ({
+    'playList': fromJS (playList),
+    'sequencePlayList': fromJS (sequenceList),
+    'currentIndex': fromJS (currentIndex),
+  });
+}
 
 function reducer(state = defaultState, action) {
   switch (action.type) {
@@ -176,6 +76,8 @@ function reducer(state = defaultState, action) {
       return state.set("showPlayList", action.data);
     case actionTypes.CHANGE_CURRENT_SONG:
       return state.set("currentSong", action.data);
+    case actionTypes.INSERT_SONG:
+      return handleInsertSong(state, action.data);
     default:
       return state;
   }
